@@ -13,7 +13,7 @@ var config = builder.Configuration;
 
 // Add services to the container.
 
-//builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi); ////!!!///
+//builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi); ////!!!/// 
 
 
 var connectionString = builder.Configuration.GetConnectionString("MyAppDbConnectionString"); // This is how to get something from the ( appsetting.json ) File. through the ( builder.Configuration )
