@@ -1,9 +1,6 @@
 ﻿using CheapUdemy.Contracts;
 using CheapUdemy.Data;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore.ChangeTracking;
-
-//using BCrypt.Net;
 
 
 namespace CheapUdemy.Repository
@@ -16,13 +13,6 @@ namespace CheapUdemy.Repository
         {
             this._ctx = context;
         }
-
-
-
-        //private User? GetLastUser()
-        //{
-        //    return _ctx.Set<User>().ToList()?.LastOrDefault();
-        //}
 
 
         public override async Task<User> AddAsync(User user)
@@ -39,9 +29,6 @@ namespace CheapUdemy.Repository
                 Value = 0,
                 History = new List<WalletHistoryOperationObj>(),
             };
-
-            ////************////::
-            //user.Wallet = UserWallet;
 
             string userPswd_Ptr = user.Password;
             user.Password = BCrypt.Net.BCrypt.HashPassword(userPswd_Ptr);
@@ -74,8 +61,6 @@ namespace CheapUdemy.Repository
 
         public async Task<User?> CheckUserLoginDataAsync(UserLogin userData)
         {
-            //bool isUserExist = (await GetAllAsync()).Any(u => u.Email.ToLower().Equals(userData?.Email?.ToLower()) && BCrypt.Net.BCrypt.Verify(userData.Password, u.Password));
-
             User? user = (await GetAllAsync()).Find(u => u.Email.Equals(userData?.Email?.ToLower()) && BCrypt.Net.BCrypt.Verify(userData.Password, u.Password));
 
             if (user is null) return null;
@@ -166,7 +151,7 @@ namespace CheapUdemy.Repository
             });
             senderWallet.Value -= amount;
 
-            amount--; // Cut off 1Credit I.E. 1$ from the transfered amount.
+            amount--; // Cut-off 1Credit I.E. 1$ from the transfered amount.
 
             receiverWallet.History.Add(new WalletHistoryOperationObj
             {
@@ -181,7 +166,6 @@ namespace CheapUdemy.Repository
             await _ctx.SaveChangesAsync();
 
             Wallet? userWallet_updated = _ctx.Set<Wallet>().ToListAsync().Result.Find(uw => uw.OwnerId == userId);
-            //userWallet_updated.History = userWallet_updated.History.Reverse<WalletHistoryOperationObj>().ToList();
             return userWallet_updated;
         }
 
@@ -254,7 +238,6 @@ namespace CheapUdemy.Repository
             if (purchase is null) return null;
 
             UdemAccount? udemAcc = _ctx.Set<UdemAccount>().ToList().Find(ua => ua.Email.ToLower().Equals(purchase.UdemEmail.ToLower()) && ua.OwnerId == purchase.OwnerId);
-            //if (udemAcc is null) udemAcc = _ctx.Set<UdemAccount>().ToList().Find(ua => ua.OwnerId == purchase.Id);
             Wallet? wallet = _ctx.Set<Wallet>().ToListAsync().Result.Find(uw => uw.OwnerId == purchase.OwnerId);
 
             Console.WriteLine($"\n\n val:{wallet?.Value} || price:{purchase.Price} \n\n");
@@ -280,11 +263,6 @@ namespace CheapUdemy.Repository
 
         public Task<UserServicePurchase?>? GetServicePurchase(int userId, int purchaseId, string purchaseType, string? history)
         {
-            //await Task.CompletedTask;
-
-            Console.WriteLine(history);
-
-            Console.Write(string.Format("{0:yyyy-MM-ddTHH:mm:ss.FFFZ}", _ctx.Set<UserServicePurchase>().ToListAsync().Result.Find(usp => usp.OwnerId == userId)?.CreatedAt).Replace(".", String.Empty)?.Replace(":", String.Empty).Replace("-", String.Empty));
 
             UserServicePurchase? purchase = _ctx.Set<UserServicePurchase>().ToListAsync().Result.Find(usp =>
                 usp.OwnerId == userId &&
