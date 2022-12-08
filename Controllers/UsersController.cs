@@ -145,8 +145,6 @@ namespace CheapUdemy.Controllers
 
         private async Task<bool> UserExists(int id)
         {
-            //return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
-
             return await _usersRepo.Exists(id);
         }
 
@@ -243,7 +241,7 @@ namespace CheapUdemy.Controllers
         [HttpPatch("{id}/wallet/{xKey}/{amount}")]
         public async Task<ActionResult<Wallet?>> PatchtWallet(int id, string xKey, byte amount, [FromQuery(Name = "payload")] string paymentData)
         {
-            if (xKey != "l0llmfa0123321") return Problem("Not authorized !");
+            if (xKey != "<THE_SECRET_XKEY>") return Problem("Not authorized !");
 
             //byte amount_BYTE = (byte)Math.Abs(Convert.ToByte(amount));
             byte absAmount = (byte)Math.Abs(amount);
@@ -289,9 +287,6 @@ namespace CheapUdemy.Controllers
             m_purchase.OwnerId = id;
             m_purchase.Price = m_purchase.Type.ToLower().Equals("gift") ? CONSTANTS.SERVICE_GIFT_PRICE : CONSTANTS.SERVICE_ACCOUNT_PRICE;
 
-            //if (m_purchase.UdemEmail is )
-
-
             UserServicePurchase? purchase = await _usersRepo.PurchaseServiceAsync(m_purchase);
 
             if (purchase is not null)
@@ -307,8 +302,6 @@ namespace CheapUdemy.Controllers
             int servicePurchaseId = 0;
 
             int.TryParse(history?.Split('i')?.ElementAtOrDefault(1), out servicePurchaseId);
-
-            ////if (servicePurchaseId == 0) return NotFound();
 
             UserServicePurchase? usp = _usersRepo.GetServicePurchase(id, servicePurchaseId, purchaseType, history)?.Result;
 
