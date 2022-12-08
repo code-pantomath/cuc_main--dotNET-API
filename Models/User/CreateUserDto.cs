@@ -7,7 +7,7 @@ namespace CheapUdemy.Models.User
         [Required, MinLength(3), MaxLength(15)]
         public string? FirstName { get; set; }
 
-        [Required, MinLength(3), MaxLength(15]
+        [Required, MinLength(3), MaxLength(15)]
         public string? LastName { get; set; }
 
         [Required, EmailAddress, MinLength(5), MaxLength(45)]
