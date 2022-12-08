@@ -58,7 +58,7 @@ namespace CheapUdemy.Data
         {
 
            base.OnModelCreating(modelBuilder);
-           modelBuilder.Entity<User>().HasData(new User[] // This methods receives an array of the objects you want to save as default objects that exists before any other ones...
+           modelBuilder.Entity<User>().HasData(new User[]
            {
 
                new User
