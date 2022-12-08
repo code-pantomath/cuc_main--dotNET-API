@@ -15,7 +15,6 @@ using CheapUdemy.Models.Udem;
 namespace CheapUdemy.Controllers
 {
     [Route("api/[controller]")]
-    //[Host("cheapudemy.com", "www.cheapudemy.com")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -42,31 +41,22 @@ namespace CheapUdemy.Controllers
               return NotFound();
           }
 
-
-            //Response.Headers.AccessControlAllowOrigin = "https://cheapudemy.com";
-            //Response.Headers["Access-Control-Allow-Origin"] = "https://cheapudemy.com";
-
             return (await _usersRepo.GetAllAsync());
         }
 
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(CreateUserDto createUserDto)
         {
             if (await _usersRepo.GetAllAsync() == null)
             {
-                //return Problem("Entity set 'MyAppDbContext.Users'  is null.");
+                return Problem("None were found.");
             }
-
 
             User user = _mapper.Map<User>(createUserDto);
 
             user.Email = user.Email.ToLower();
-
-            //user.IP = (string)HttpContext.Connection.RemoteIpAddress.Address.ToString();
-
 
             if ((await _usersRepo.GetAllAsync()).Any(u => u.Email.ToLower().Equals(user.Email?.ToLower())))
                 return Problem("This email is already used!");
@@ -81,7 +71,7 @@ namespace CheapUdemy.Controllers
         
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:Int32}")]
         public async Task<ActionResult<User>> GetUser(int id, [FromQuery] string? email="")
         {
             if (await _usersRepo.GetAllAsync() == null)
@@ -100,9 +90,8 @@ namespace CheapUdemy.Controllers
         }
 
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        // PUT: api/Users/{5}
+        [HttpPut("{id:Int32}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -132,8 +121,8 @@ namespace CheapUdemy.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
+        // DELETE: api/Users/{5}
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             if (await _usersRepo.GetAllAsync() == null)
