@@ -8,16 +8,13 @@ namespace CheapUdemy.Data
         public int Id { get; set; }
 
 
-        [MinLength(3)]
-        [MaxLength(15)]
+        [MinLength(3), MaxLength(15)]
         public string FirstName { get; set; }
 
-        [MinLength(3)]
-        [MaxLength(15)]
+        [MinLength(3), MaxLength(15)]
         public string LastName { get; set; }
 
-        [MinLength(5)]
-        [MaxLength(45)]
+        [MinLength(5), MaxLength(45)]
         public string Email { get; set; }
 
         //[MinLength(8)]
